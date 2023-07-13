@@ -26,6 +26,12 @@ class Display:
             surface, position
         )
     
+    def add_message(self,msg_text:str,font_style,color:tuple[int,int,int],position:list[int,int]):
+        mesg = font_style.render(msg_text, True, color)
+        self.set_additional_surface(
+            mesg, position
+            )
+    
     def fill_background(self,color:list[int,int,int]):
         self.surface.fill(color)
     
@@ -231,18 +237,20 @@ class SnakeGame:
         self.game_close = False
         self.game_over = False
     
-    def set_score_message(self,score):        
-        value =  self.game_style.score_font.render(
-            f"Your score is {score}",
-            True,
-            self.game_style.yellow
+    def set_score_message(self,score):   
+        self.display.add_message(
+            msg_text=f"Your score is {score}",
+            font_style=self.game_style.score_font,
+            color=self.game_style.yellow,
+            position=[0,0]            
         )
-        self.display.set_additional_surface(value, [0,0])
     
-    def set_message(self,msg_text:str,color:tuple[int,int,int]):
-        mesg = self.game_style.font_style.render(msg_text, True, color)
-        self.display.set_additional_surface(
-            mesg, [self.display.dis_width / 6, self.display.dis_height / 3]
+    def set_message(self,msg_text:str,color:tuple[int,int,int]):        
+        self.display.add_message(
+            msg_text=msg_text,
+            font_style=self.game_style.font_style,
+            color=color,
+            position=[self.display.dis_width / 6, self.display.dis_height / 3]
             )
         
     def handle_exit(self):
